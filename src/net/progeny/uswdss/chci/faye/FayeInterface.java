@@ -53,26 +53,61 @@ public class FayeInterface {
     String data = "{\"hdg\":\"" + nav.formatHeading(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
+  public boolean setHeading(double value) {
+    return setHeading(value + "");
+  }
+  public boolean setHeading(float value) {
+    return setHeading(value + "");
+  }
+
   public boolean setCourse(String value) {
     String channel = "/chci/nav";
     String data = "{\"crs\":\"" + nav.formatCourse(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
+  public boolean setCourse(double value) {
+    return setCourse(value + "");
+  }
+  public boolean setCourse(float value) {
+    return setCourse(value + "");
+  }
+
   public boolean setSpeed(String value) {
     String channel = "/chci/nav";
     String data = "{\"spd\":\"" + nav.formatSpeed(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
+  public boolean setSpeed(double value) {
+    return setSpeed(value + "");
+  }
+  public boolean setSpeed(float value) {
+    return setSpeed(value + "");
+  }
+
   public boolean setLatitude(String value) {
     String channel = "/chci/nav";
     String data = "{\"lat\":\"" + nav.formatLatitude(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
+  public boolean setLatitude(double value) {
+    return setLatitude(value + "");
+  }
+  public boolean setLatitude(float value) {
+    return setLatitude(value + "");
+  }
+
   public boolean setLongitude(String value) {
     String channel = "/chci/nav";
     String data = "{\"lon\":\"" + nav.formatLongitude(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
+  public boolean setLongitude(double value) {
+    return setLongitude(value + "");
+  }
+  public boolean setLongitude(float value) {
+    return setLongitude(value + "");
+  }
+
   public boolean setNav(String hdg, String crs, String spd, String lat, String lon) {
     String channel = "/chci/nav";
     String data =  "{";
@@ -84,6 +119,10 @@ public class FayeInterface {
     data +=        "}";
     return (sendHTTPRequest(channel, data));
   }
+  public boolean setNav(double hdg, double crs, float spd, double lat, float lon) {
+    return setNav(hdg+"",crs+"",spd+"",lat+"",lon+"");
+  }
+
   public boolean setStale(String value) {
     if (!value.equalsIgnoreCase("true") && !value.equalsIgnoreCase("false")){
       value = "false";
@@ -91,6 +130,13 @@ public class FayeInterface {
     String channel = "/chci/nav/stale";
     String data = "\"" + value + "\"";
     return (sendHTTPRequest(channel, data));
+  }
+  public boolean setStale(int value) {
+    if (value == 0){
+      return setStale("false");
+    } else {
+      return setStale("true");
+    }
   }
 
   private boolean sendHTTPRequest(String channel, String data) {

@@ -1,4 +1,4 @@
-package net.progeny.uswdss.chci;
+package net.progeny.uswdss.chci.nav;
 
 import java.text.NumberFormat;
 import java.text.DecimalFormat;

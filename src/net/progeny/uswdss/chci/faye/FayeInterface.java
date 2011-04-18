@@ -13,34 +13,29 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import net.progeny.uswdss.chci.NavFormatter;
+
 public class FayeInterface {
 
   public static void main(String args[]) {
     FayeInterface faye = new FayeInterface();
     faye.setFayeServer("localhost", "9292");
-
-    faye.setHeading("800");
-    faye.setCourse("200");
-    faye.setSpeed("300");
-    faye.setLatitude("400");
-    faye.setLongitude("500");
-
-    faye.setStale("true");
-
-    System.out.println(faye.setNav("1","2","3","4","5"));
-
+    faye.setHeading("1");
+    faye.setSpeed("1");
+    faye.setCourse("1");
+    faye.setLatitude("1");
+    faye.setLongitude("1");
     faye.setStale("false");
-    faye.setStale("true");
-    faye.setStale("false");
-
     System.exit(0);
   }
 
   private String host;
   private String port;
+  private NavFormatter nav;
 
   public FayeInterface(String host, String port){
     setFayeServer(host, port);
+    nav = new NavFormatter();
   }
 
   public FayeInterface () {
@@ -55,41 +50,44 @@ public class FayeInterface {
   // Update CHCI
   public boolean setHeading(String value) {
     String channel = "/chci/nav";
-    String data = "{\"hdg\":\"" + value + "\"}";
+    String data = "{\"hdg\":\"" + nav.formatHeading(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
   public boolean setCourse(String value) {
     String channel = "/chci/nav";
-    String data = "{\"crs\":\"" + value + "\"}";
+    String data = "{\"crs\":\"" + nav.formatCourse(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
   public boolean setSpeed(String value) {
     String channel = "/chci/nav";
-    String data = "{\"spd\":\"" + value + "\"}";
+    String data = "{\"spd\":\"" + nav.formatSpeed(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
   public boolean setLatitude(String value) {
     String channel = "/chci/nav";
-    String data = "{\"lat\":\"" + value + "\"}";
+    String data = "{\"lat\":\"" + nav.formatLatitude(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
   public boolean setLongitude(String value) {
     String channel = "/chci/nav";
-    String data = "{\"lon\":\"" + value + "\"}";
+    String data = "{\"lon\":\"" + nav.formatLongitude(value) + "\"}";
     return (sendHTTPRequest(channel, data));
   }
   public boolean setNav(String hdg, String crs, String spd, String lat, String lon) {
     String channel = "/chci/nav";
     String data =  "{";
-    data +=          "\"hdg\":\"" + hdg + "\",";
-    data +=          "\"crs\":\"" + crs + "\",";
-    data +=          "\"spd\":\"" + spd + "\",";
-    data +=          "\"lat\":\"" + lat + "\",";
-    data +=          "\"lon\":\"" + lon + "\"";
+    data +=          "\"hdg\":\"" + nav.formatHeading(hdg) + "\",";
+    data +=          "\"crs\":\"" + nav.formatCourse(crs) + "\",";
+    data +=          "\"spd\":\"" + nav.formatSpeed(spd) + "\",";
+    data +=          "\"lat\":\"" + nav.formatLatitude(lat) + "\",";
+    data +=          "\"lon\":\"" + nav.formatLongitude(lon) + "\"";
     data +=        "}";
     return (sendHTTPRequest(channel, data));
   }
   public boolean setStale(String value) {
+    if (!value.equalsIgnoreCase("true") && !value.equalsIgnoreCase("false")){
+      value = "false";
+    }
     String channel = "/chci/nav/stale";
     String data = "\"" + value + "\"";
     return (sendHTTPRequest(channel, data));
